@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationContextInitializer=\
+  uk.co.zacheryharley.lambdalight.aws.config.ColdStartOptimizedAwsNetworkContextInitializer,\
+  uk.co.zacheryharley.lambdalight.aws.secrets.config.SecretServiceContextInitializer

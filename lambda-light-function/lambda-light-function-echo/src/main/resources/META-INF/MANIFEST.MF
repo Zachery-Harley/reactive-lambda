@@ -1,0 +1,1 @@
+Main-Class: uk.co.zacheryharley.lambdalight.function.echo.EchoFunction
