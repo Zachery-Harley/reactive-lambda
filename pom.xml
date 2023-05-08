@@ -50,6 +50,12 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -69,6 +75,12 @@
             <dependency>
                 <groupId>uk.co.zacheryharley.lambdalight</groupId>
                 <artifactId>lambda-light-aws-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-monitoring</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

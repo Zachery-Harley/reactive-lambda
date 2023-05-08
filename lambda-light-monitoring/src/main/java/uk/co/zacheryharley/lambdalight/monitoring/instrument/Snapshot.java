@@ -2,34 +2,24 @@ package uk.co.zacheryharley.lambdalight.monitoring.instrument;
 
 import java.util.concurrent.TimeUnit;
 
-public class Snapshot {
-    private final long count;
-    private final long total;
-    private final long max;
+public record Snapshot(long count, long total, long max) {
 
-    public Snapshot(long count, long total, long max) {
-        this.count = count;
-        this.total = total;
-        this.max = max;
-    }
-
-    public long getCount() {
-        return count;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public long getTotal(TimeUnit unit) {
+    public long total(TimeUnit unit) {
         return unit.convert(total, TimeUnit.NANOSECONDS);
     }
 
-    public long getMax() {
-        return max;
+    public long max(TimeUnit unit) {
+        return unit.convert(max, TimeUnit.NANOSECONDS);
     }
 
-    public long getMax(TimeUnit unit) {
-        return unit.convert(total, TimeUnit.NANOSECONDS);
+    public double mean() {
+        return mean(TimeUnit.NANOSECONDS);
+    }
+
+    public double mean(TimeUnit unit) {
+        if (count == 0) {
+            return 0;
+        }
+        return (double) total(unit) / count();
     }
 }

@@ -20,6 +20,11 @@
 
         <dependency>
             <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-monitoring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
             <artifactId>lambda-light-aws-sqs</artifactId>
         </dependency>
     </dependencies>
