@@ -19,3 +19,4 @@ Feature: S3 Testing Support
 
     When the object "testDocument.txt" becomes present in the s3 bucket "upload-test-bucket-001"
     Then the s3 object's size will be 11 bytes
+
