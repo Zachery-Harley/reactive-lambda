@@ -11,6 +11,7 @@ import org.springframework.messaging.MessageHeaders;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
+import uk.co.zacheryharley.lambdalight.aws.monitoring.XRayTracingService;
 import uk.co.zacheryharley.lambdalight.exception.EventHandlerException;
 import uk.co.zacheryharley.lambdalight.handler.EventHandler;
 import uk.co.zacheryharley.lambdalight.handler.EventResult;
@@ -33,25 +34,25 @@ public abstract class SqsEventHandler implements EventHandler<Mono<Message<SQSEv
 
     public static Type getFunctionType() {
         return forClassWithGenerics(Function.class,
-                forClassWithGenerics(Mono.class, forClassWithGenerics(Message.class, SQSEvent.class)),
-                forClassWithGenerics(Mono.class, SQSBatchResponse.class)
+            forClassWithGenerics(Mono.class, forClassWithGenerics(Message.class, SQSEvent.class)),
+            forClassWithGenerics(Mono.class, SQSBatchResponse.class)
         ).getType();
     }
 
     @Override
     public Mono<SQSBatchResponse> apply(Mono<Message<SQSEvent>> sqsEvent) {
         return sqsEvent
-                .flatMapMany(event -> Flux.fromIterable(event.getPayload().getRecords())
-                        .map(rec -> Tuples.of(event.getHeaders(), rec)))
-                .concatMap(record -> handleEvent(record.getT1(), record.getT2()))
-                .filter(result -> !result.isSuccess())
-                .doOnNext(result -> LOGGER.error("An exception occurred processing event: [{}].", result.getEventId(), result.getCause()))
-                .flatMap(result -> batchProcessResponse
-                        ? Mono.just(result)
-                        : Mono.error(new EventHandlerException("Failed to process event: [%s]".formatted(result.getEventId()), result.getCause())))
-                .map(this::toBatchItemFailure)
-                .collect(Collectors.toList())
-                .map(SQSBatchResponse::new);
+            .flatMapMany(event -> Flux.fromIterable(event.getPayload().getRecords())
+                .map(rec -> Tuples.of(event.getHeaders(), rec)))
+            .concatMap(record -> handleEvent(record.getT1(), record.getT2()))
+            .filter(result -> !result.isSuccess())
+            .doOnNext(result -> LOGGER.error("An exception occurred processing event: [{}].", result.getEventId(), result.getCause()))
+            .flatMap(result -> batchProcessResponse
+                ? Mono.just(result)
+                : Mono.error(new EventHandlerException("Failed to process event: [%s]".formatted(result.getEventId()), result.getCause())))
+            .map(this::toBatchItemFailure)
+            .collect(Collectors.toList())
+            .map(SQSBatchResponse::new);
     }
 
     private SQSBatchResponse.BatchItemFailure toBatchItemFailure(EventResult eventResult) {
@@ -60,10 +61,12 @@ public abstract class SqsEventHandler implements EventHandler<Mono<Message<SQSEv
 
     private Mono<EventResult> handleEvent(MessageHeaders headers, SQSEvent.SQSMessage message) {
         Duration timeout = Optional.ofNullable(headers.get(AWSLambdaUtils.AWS_CONTEXT, Context.class))
-                .map(context -> Duration.ofMillis(context.getRemainingTimeInMillis()))
-                .orElse(null);
+            .map(context -> Duration.ofMillis(context.getRemainingTimeInMillis()))
+            .orElse(null);
 
-        return this.handleEvent(message.getMessageId(), message.getBody(), headers, timeout);
+        return this.handleEvent(message.getMessageId(), message.getBody(), headers, timeout)
+            .transformDeferred(XRayTracingService.startTrace("HandleEvent"))
+            .transformDeferred(XRayTracingService.stopTrace());
     }
 
 }
