@@ -23,7 +23,7 @@ runs:
         chmod 700 ~/.gnupg
         
         touch ~/.gnupg/imported-key.key
-        printf "$GPG_PRIVATE_KEY" > ~/.gnupg/imported-key.key
+        printf -- "$GPG_PRIVATE_KEY" > ~/.gnupg/imported-key.key
         gpg -d --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" ~/.gnupg/private.key
       env:
         GPG_PRIVATE_KEY:  ${{ inputs.gpg_private_key }}
