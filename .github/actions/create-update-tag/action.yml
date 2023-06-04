@@ -25,7 +25,7 @@ runs:
         
         touch ~/.gnupg/private.key
         printf "$GIT_BOT_GPG_KEY" > ~/.gnupg/private.key
-        gpg --pinentry-mode loopback --passphrase "$GIT_BOT_GPG_KEY_PASSPHRASE" ~/.gnupg/private.key
+        gpg -d --pinentry-mode loopback --passphrase "$GIT_BOT_GPG_KEY_PASSPHRASE" ~/.gnupg/private.key
 
       env:
         GIT_BOT_GPG_KEY: ${{ inputs.gpg-key }}
