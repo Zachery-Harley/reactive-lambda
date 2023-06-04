@@ -12,3 +12,5 @@ jobs:
         uses: ./.github/actions/create-update-tag
         with:
           tag: "anything"
+          gpg-key: ${{ secrets.GIT_BOT_GPG_KEY }}
+          gpg-key-passphrase: ${{ secrets.GIT_BOT_GPG_KEY_PASSPHRASE }}
