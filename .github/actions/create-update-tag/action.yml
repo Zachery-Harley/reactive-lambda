@@ -5,15 +5,22 @@ inputs:
   tag:
     required: true
     description: "The name of the tag to create/update"
+  gpg-key:
+    required: true
+    description: "The base 64 encoded GPG Key"
+  gpg-key-passphrase:
+    required: true
+    description: "The passphrase of the GPG key"
 
 runs:
   using: composite
   steps:
     - name: Configure GPG Key
+      shell: bash
       run: |
         echo "$GIT_BOT_GPG_KEY" > ~/.gnupg/private.key
         echo "$GIT_BOT_GPG_KEY_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 ~/.gnupg/private.key
       env:
-        GIT_BOT_GPG_KEY: ${{ secrets.$GIT_BOT_GPG_KEY }}
-        GIT_BOT_GPG_KEY_PASSPHRASE: ${{ secrets.$GIT_BOT_GPG_KEY_PASSPHRASE }}
+        GIT_BOT_GPG_KEY: ${{ inputs.gpg-key }}
+        GIT_BOT_GPG_KEY_PASSPHRASE: ${{ inputs.gpg-key-passphrase }}
 
