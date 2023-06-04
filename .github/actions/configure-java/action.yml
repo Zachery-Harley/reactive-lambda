@@ -1,0 +1,13 @@
+name: Configure Java
+description: Configure Java JDK
+
+runs:
+  using: composite
+  steps:
+    - name: Setup JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        overwrite-settings: false
+        cache: maven
