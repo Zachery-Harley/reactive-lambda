@@ -9,6 +9,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Configure GitHub
-        uses: ./.github/actions/configure-update-tag
+        uses: ./.github/actions/create-update-tag
         with:
           tag: "anything"
