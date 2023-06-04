@@ -1,0 +1,30 @@
+name: Import GPG
+description: Import a GPG key to allow for verified commits/tags
+
+branding:
+  color: green
+  icon: check-circle
+
+inputs:
+  gpg_private_key:
+    description: GPG private key, base64 encoded
+    required: true
+  gpg_passphrase:
+    description: Passphrase for the GPG private key
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Import GPG Key
+      shell: bash
+      run: |
+        mkdir -p ~/.gnupg
+        chmod 700 ~/.gnupg
+        
+        touch ~/.gnupg/imported-key.key
+        printf "$GPG_PRIVATE_KEY" > ~/.gnupg/imported-key.key.
+        gpg -d --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" ~/.gnupg/private.key
+      env:
+        GPG_PRIVATE_KEY:  ${{ inputs.gpg_private_key }}
+        GPG_PASSPHRASE: ${{ inputs.gpg_passphrase }}
