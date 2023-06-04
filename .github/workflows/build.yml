@@ -1,0 +1,12 @@
+name: Build
+
+on: [ workflow_dispatch ]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure GitHub
+        uses: ./.github/actions/configure-java
+        with:
+          tag: "anything"
