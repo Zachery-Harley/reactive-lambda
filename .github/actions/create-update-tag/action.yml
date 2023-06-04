@@ -1,0 +1,19 @@
+name: Create or Update Git Tag
+description: Create a new lightweight tag, or update the reference of an existing tag.
+
+inputs:
+  tag:
+    required: true
+    description: "The name of the tag to create/update"
+
+runs:
+  using: composite
+  steps:
+    - name: Configure GPG Key
+      run: |
+        echo "$GIT_BOT_GPG_KEY" > ~/.gnupg/private.key
+        echo "$GIT_BOT_GPG_KEY_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 ~/.gnupg/private.key
+      env:
+        GIT_BOT_GPG_KEY: ${{ secrets.$GIT_BOT_GPG_KEY }}
+        GIT_BOT_GPG_KEY_PASSPHRASE: ${{ secrets.$GIT_BOT_GPG_KEY_PASSPHRASE }}
+
