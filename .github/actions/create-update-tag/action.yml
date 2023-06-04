@@ -18,10 +18,15 @@ runs:
     - name: Configure GPG Key
       shell: bash
       run: |
+        gpg --version
+        
         mkdir -p ~/.gnupg
+        chmod 700 ~/.gnupg
+        
         touch ~/.gnupg/private.key
         printf "$GIT_BOT_GPG_KEY" > ~/.gnupg/private.key
-        echo "$GIT_BOT_GPG_KEY_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 ~/.gnupg/private.key
+        gpg --pinentry-mode loopback --passphrase "$GIT_BOT_GPG_KEY_PASSPHRASE" ~/.gnupg/private.key
+
       env:
         GIT_BOT_GPG_KEY: ${{ inputs.gpg-key }}
         GIT_BOT_GPG_KEY_PASSPHRASE: ${{ inputs.gpg-key-passphrase }}
