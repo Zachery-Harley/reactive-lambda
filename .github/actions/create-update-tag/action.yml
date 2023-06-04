@@ -18,6 +18,7 @@ runs:
     - name: Configure GPG Key
       shell: bash
       run: |
+        mkdir -p ~/.gnupg
         touch ~/.gnupg/private.key
         printf "$GIT_BOT_GPG_KEY" > ~/.gnupg/private.key
         echo "$GIT_BOT_GPG_KEY_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 ~/.gnupg/private.key
