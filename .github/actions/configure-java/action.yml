@@ -7,8 +7,6 @@ inputs:
     description: The version of Java to configure
     default: 17
 
-
-
 runs:
   using: composite
   steps:

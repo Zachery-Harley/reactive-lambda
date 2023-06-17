@@ -18,8 +18,4 @@
         <module>lambda-light-layer-parent</module>
         <module>lambda-light-layer-core</module>
     </modules>
-
-    <properties>
-    </properties>
-
 </project>

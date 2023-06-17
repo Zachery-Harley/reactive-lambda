@@ -24,6 +24,7 @@
         <module>lambda-light-aws-sqs</module>
         <module>lambda-light-aws-core</module>
         <module>lambda-light-monitoring</module>
+        <module>lambda-light-test-aggregator</module>
     </modules>
 
     <properties>
@@ -81,6 +82,20 @@
             <dependency>
                 <groupId>uk.co.zacheryharley.lambdalight</groupId>
                 <artifactId>lambda-light-monitoring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Layers -->
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-layer-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Functions -->
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-function-echo</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

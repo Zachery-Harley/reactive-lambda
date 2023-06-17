@@ -18,7 +18,7 @@ inputs:
   git_email:
     required: true
     description: The email to configure git to use
-
+#SSH Needs to be added. Files are present in Vault
 runs:
   using: composite
   steps:

@@ -3,24 +3,32 @@ name: Build
 on: [ workflow_dispatch ]
 
 jobs:
-  setup:
+  compile:
+    name: Compile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure GitHub
-        uses: ./.github/actions/import-gpg
-        with:
-          gpg_private_key: ${{ secrets.GIT_BOT_GPG_KEY }}
-          gpg_passphrase: ${{ secrets.GIT_BOT_GPG_KEY_PASSPHRASE }}
-          git_name: ZacheryHarley-GitBot
-          git_email: 135477319+ZacheryHarley-GitBot@users.noreply.github.com
+      - name: Configure Java
+        uses: ./.github/actions/configure-java
 
-      - name: Test Commit
-        shell: bash
-        run: |
-          touch testFile.txt
-          
-          git add testFile.txt
-          git commit -m "Test Commit"
-          git push
+      - name: Compile Code
+        uses: mvn clean compile
+
+      - name: Upload working directory
+        uses: ./.github/actions/write-working-dir
+
+  java-tests:
+    name: Java Tests
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download working directory
+        uses: ./.github/actions/read-working-dir
+
+      - name: Configure Java
+        uses: ./.github/actions/configure-java
+
+      - name: Run tests
+        run: mvn verify

@@ -1,0 +1,22 @@
+name: Write working directory
+description: Write the current working directory to allow for multiple Jobs
+
+inputs:
+  artificat-name:
+    required: false
+    description: "The name of the uploaded artifact"
+    default: "working-dir"
+
+runs:
+  using: composite
+  steps:
+    - name: Zip working directory
+      shell: bash
+      run: zip -r working.zip ./*
+
+    - name: Upload working directory
+      uses: actions:/upload-artifact@v3
+      with:
+        retention-days: 1
+        name: ${{ inputs.artifact-name }}
+        path: working.zip
