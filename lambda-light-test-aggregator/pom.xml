@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.co.zacheryharley.lambdalight</groupId>
+        <artifactId>lambda-light-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../lambda-light-parent</relativePath>
+    </parent>
+
+    <artifactId>lambda-light-test-aggregator</artifactId>
+
+    <dependencies>
+        <!-- Root Modules -->
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-aws-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-aws-sqs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-monitoring</artifactId>
+        </dependency>
+
+        <!-- Layers -->
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-layer-core</artifactId>
+        </dependency>
+
+        <!-- Functions -->
+        <dependency>
+            <groupId>uk.co.zacheryharley.lambdalight</groupId>
+            <artifactId>lambda-light-function-echo</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
