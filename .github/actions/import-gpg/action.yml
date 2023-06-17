@@ -12,6 +12,12 @@ inputs:
   gpg_passphrase:
     description: Passphrase for the GPG private key
     required: false
+  git_name:
+    description: The name to configure git to use
+    required: true
+  git_email:
+    required: true
+    description: The email to configure git to use
 
 runs:
   using: composite
@@ -30,3 +36,12 @@ runs:
       env:
         GPG_PRIVATE_KEY:  ${{ inputs.gpg_private_key }}
         GPG_PASSPHRASE: ${{ inputs.gpg_passphrase }}
+
+    - name: Configure Git user
+      shell: bash
+      run: |
+        git config --global user.email "$GIT_EMAIL"
+        git config --global user.name "$GIT_NAME"
+      env:
+        GIT_EMAIL: ${{ inputs.git_email }}
+        GIT_NAME: ${{ inputs.git_name }}

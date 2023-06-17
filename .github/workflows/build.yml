@@ -13,3 +13,14 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GIT_BOT_GPG_KEY }}
           gpg_passphrase: ${{ secrets.GIT_BOT_GPG_KEY_PASSPHRASE }}
+          git_name: ZacheryHarley-GitBot
+          git_email: 135477319+ZacheryHarley-GitBot@users.noreply.github.com
+
+      - name: Test Commit
+        shell: bash
+        run: |
+          touch testFile.txt
+          
+          git add testFile.txt
+          git commit -m "Test Commit"
+          git push
