@@ -2,7 +2,7 @@ name: Read working directory
 description: Read the uploaded working directory to allow for multiple jobs
 
 inputs:
-  artificat-name:
+  artifact-name:
     required: false
     description: "The name of the uploaded artifact"
     default: "working-dir"

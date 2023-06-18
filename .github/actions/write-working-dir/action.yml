@@ -2,7 +2,7 @@ name: Write working directory
 description: Write the current working directory to allow for multiple Jobs
 
 inputs:
-  artificat-name:
+  artifact-name:
     required: false
     description: "The name of the uploaded artifact"
     default: "working-dir"
