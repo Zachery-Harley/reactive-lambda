@@ -13,7 +13,8 @@ jobs:
         uses: ./.github/actions/configure-java
 
       - name: Compile Code
-        uses: mvn clean compile
+        shell: bash
+        run: mvn clean compile
 
       - name: Upload working directory
         uses: ./.github/actions/write-working-dir
