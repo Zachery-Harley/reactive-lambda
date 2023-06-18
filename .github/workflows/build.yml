@@ -1,10 +1,13 @@
-name: Build
+name: Build And Test
 
 on: [ workflow_dispatch, pull_request ]
+env:
+  AWS_REGION: eu-west-2
 
 jobs:
   compile:
     name: Compile
+    environment: Dev
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,6 +24,7 @@ jobs:
 
   java-tests:
     name: Java Tests
+    environment: Dev
     needs: compile
     runs-on: ubuntu-latest
     steps:
@@ -34,11 +38,34 @@ jobs:
       - name: Run tests
         run: mvn verify
 
-      - name: Add coverage to PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.4
+  upload-artifact:
+    name: Upload Artifacts
+    environment: Dev
+    needs: compile
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download working directory
+        uses: ./.github/actions/read-working-dir
+
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
-          paths: ${{ github.workspace }}/lambda-light-test-aggregator/target/site/jacoco-aggregate/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
+          role-to-assume: ${{ secrets.AWS_PIPELINE_ROLE }}
+          role-session-name: BuildSession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: ./.github/actions/configure-aws-codeartifact
+        id: code-artifact
+        with:
+          domain-owner: ${{ secrets.AWS_REPOSITORY_ACCOUNT }}
+          domain: $${{ secrets.DOMAIN }}
+
+      - name: Upload
+        shell: bash
+        run: mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
+        env:
+          AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
+          AWS_REPOSITORY: ${{ secrets.AWS_REPOSITORY }}
+

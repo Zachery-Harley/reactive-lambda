@@ -33,6 +33,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/Zachery-Harley/reactive-lambda.git</connection>
+        <developerConnection>https://github.com/Zachery-Harley/reactive-lambda.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <name>lambda-light</name>
+            <id>zacheryharley-java-lambda-light</id>
+            <url>${env.AWS_REPOSITORY}</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -100,5 +113,19 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

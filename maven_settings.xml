@@ -1,0 +1,7 @@
+<servers>
+    <server>
+        <id>zacheryharley-java-lambda-light</id>
+        <username>aws</username>
+        <password>${env.AWS_TOKEN}</password>
+    </server>
+</servers>
