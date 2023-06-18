@@ -60,7 +60,7 @@ jobs:
         id: code-artifact
         with:
           domain-owner: ${{ secrets.AWS_REPOSITORY_ACCOUNT }}
-          domain: $${{ secrets.DOMAIN }}
+          domain: ${{ secrets.DOMAIN }}
 
       - name: Upload
         shell: bash
