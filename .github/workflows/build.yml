@@ -34,7 +34,7 @@ jobs:
         run: mvn verify
 
       - name: JaCoCo Report
-        uses: madrapps/jacoco-report@v1.4
+        uses: Madrapps/jacoco-report@v1.4
         with:
           paths: ${{ github.workspace }}/lambda-light-test-aggregator/target/site/jacoco-aggregate/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
