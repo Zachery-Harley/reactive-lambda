@@ -15,7 +15,7 @@ runs:
       run: zip -r working.zip ./*
 
     - name: Upload working directory
-      uses: actions:/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         retention-days: 1
         name: ${{ inputs.artifact-name }}
