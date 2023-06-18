@@ -1,0 +1,29 @@
+name: Authenticate Code Artifact
+description: Authenticate with code artifact. Requires that the AWS CLI is already authenticated
+
+inputs:
+  domain-owner:
+    required: true
+    description: "The AWS account the domain belongs too"
+  domain:
+    required: true
+    description: "The domain the repository is part of"
+
+outputs:
+  auth-token:
+    description: "The authenication token to use with Maven"
+    value: ${{ steps.get-token.outputs.AUTH_TOKEN }}
+
+runs:
+  using: composite
+  steps:
+    - name: Fetch auth token
+      id: get-token
+      shell: bash
+      run: |
+        AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain $DOMAIN --domain-owner $DOMAIN_OWNER --query authorizationToken --output text)
+        echo "::add-mask::$AUTH_TOKEN"
+        echo "AUTH_TOKEN=${AUTH_TOKEN}" >> $GITHUB_OUTPUT
+      env:
+        DOMAIN: ${{ inputs.domain }}
+        DOMAIN_OWNER: ${{ inputs.domain-owner }}
