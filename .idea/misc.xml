@@ -13,6 +13,8 @@
       <set>
         <option value="$PROJECT_DIR$/DemoLambda/pom.xml" />
         <option value="$PROJECT_DIR$/LambdaLightCore/pom.xml" />
+        <option value="$PROJECT_DIR$/lambda-light-function/lambda-light-function-test-aggregator/pom.xml" />
+        <option value="$PROJECT_DIR$/lambda-light-layer/lambda-light-layer-test-aggregator/pom.xml" />
       </set>
     </option>
   </component>

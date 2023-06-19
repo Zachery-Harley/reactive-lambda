@@ -1,12 +1,83 @@
-name: Build
+name: Build And Test
 
-on: [ workflow_dispatch ]
+on: [ workflow_dispatch, pull_request ]
+env:
+  AWS_REGION: eu-west-2
 
 jobs:
-  setup:
+  compile:
+    name: Compile
+    environment: Dev
     runs-on: ubuntu-latest
     steps:
-      - name: Configure GitHub
+      - uses: actions/checkout@v3
+
+      - name: Configure Java
         uses: ./.github/actions/configure-java
+
+      - name: Compile Code
+        shell: bash
+        run: mvn clean compile
+
+      - name: Upload working directory
+        uses: ./.github/actions/write-working-dir
+
+  java-tests:
+    name: Java Tests
+    environment: Dev
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download working directory
+        uses: ./.github/actions/read-working-dir
+
+      - name: Configure Java
+        uses: ./.github/actions/configure-java
+
+      - name: Run tests
+        run: mvn verify
+
+  test-node:
+    name: Test Node
+    environment: Dev
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/configure-aws
+
+  upload-artifact:
+    name: Upload Artifacts
+    environment: Dev
+    needs: compile
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download working directory
+        uses: ./.github/actions/read-working-dir
+
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
-          tag: "anything"
+          role-to-assume: ${{ secrets.AWS_PIPELINE_ROLE }}
+          role-session-name: BuildSession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: ./.github/actions/configure-aws-codeartifact
+        id: code-artifact
+        with:
+          domain-owner: ${{ secrets.AWS_REPOSITORY_ACCOUNT }}
+          domain: ${{ secrets.DOMAIN }}
+
+      - name: Configure Java
+        uses: ./.github/actions/configure-java
+
+      - name: Upload
+        run: |
+          mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
+        env:
+          AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
+          AWS_REPO: ${{ secrets.AWS_REPOSITORY }}
+

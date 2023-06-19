@@ -1,0 +1,20 @@
+name: Read working directory
+description: Read the uploaded working directory to allow for multiple jobs
+
+inputs:
+  artifact-name:
+    required: false
+    description: "The name of the uploaded artifact"
+    default: "working-dir"
+
+runs:
+  using: composite
+  steps:
+    - name: Download working directory
+      uses: actions/download-artifact@v3
+      with:
+         name: ${{ inputs.artifact-name }}
+
+    - name: Extract working directory
+      shell: bash
+      run: unzip -o working.zip

@@ -1,0 +1,47 @@
+name: Configure Git
+description: Configure Git to allow for manual Git command execution
+
+branding:
+  color: green
+  icon: check-circle
+
+inputs:
+  gpg_private_key:
+    description: GPG private key, base64 encoded. (ASCII ARMOUR)
+    required: false
+  gpg_passphrase:
+    description: Passphrase for the GPG private key
+    required: false
+  git_name:
+    description: The name to configure git to use
+    required: true
+  git_email:
+    required: true
+    description: The email to configure git to use
+#SSH Needs to be added. Files are present in Vault
+runs:
+  using: composite
+  steps:
+    - name: Import GPG Key
+      if: ${{ inputs.gpg_private_key != '' }}
+      shell: bash
+      run: |
+        mkdir -p ~/.gnupg
+        chmod 700 ~/.gnupg
+        
+        touch ~/.gnupg/imported-key.key
+        printf -- "$GPG_PRIVATE_KEY" > ~/.gnupg/imported-key.key
+        # Import the cert reading the passphrase from the STDIN, which will be the password echoed in.
+        echo "$GPG_PASSPHRASE" | gpg --pinentry-mode loopback --passphrase-fd 0 --import ~/.gnupg/imported-key.key
+      env:
+        GPG_PRIVATE_KEY:  ${{ inputs.gpg_private_key }}
+        GPG_PASSPHRASE: ${{ inputs.gpg_passphrase }}
+
+    - name: Configure Git user
+      shell: bash
+      run: |
+        git config --global user.email "$GIT_EMAIL"
+        git config --global user.name "$GIT_NAME"
+      env:
+        GIT_EMAIL: ${{ inputs.git_email }}
+        GIT_NAME: ${{ inputs.git_name }}

@@ -24,6 +24,7 @@
         <module>lambda-light-aws-sqs</module>
         <module>lambda-light-aws-core</module>
         <module>lambda-light-monitoring</module>
+        <module>lambda-light-test-aggregator</module>
     </modules>
 
     <properties>
@@ -31,6 +32,19 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/Zachery-Harley/reactive-lambda.git</connection>
+        <developerConnection>https://github.com/Zachery-Harley/reactive-lambda.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <name>lambda-light</name>
+            <id>zacheryharley-java-lambda-light</id>
+            <url>${env.AWS_REPO}</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -83,7 +97,35 @@
                 <artifactId>lambda-light-monitoring</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <!-- Layers -->
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-layer-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Functions -->
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-function-echo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
