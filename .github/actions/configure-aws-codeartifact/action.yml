@@ -11,7 +11,7 @@ inputs:
 
 outputs:
   auth-token:
-    description: "The authenication token to use with Maven"
+    description: "The authentication token to use with Maven"
     value: ${{ steps.get-token.outputs.AUTH_TOKEN }}
 
 runs:
