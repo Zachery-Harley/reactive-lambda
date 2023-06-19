@@ -1,0 +1,6 @@
+name: Node Test
+description: Node Test
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

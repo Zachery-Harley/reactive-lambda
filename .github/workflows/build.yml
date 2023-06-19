@@ -38,6 +38,15 @@ jobs:
       - name: Run tests
         run: mvn verify
 
+  test-node:
+    name: Test Node
+    environment: Dev
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/configure-aws
+
   upload-artifact:
     name: Upload Artifacts
     environment: Dev
@@ -70,5 +79,5 @@ jobs:
           mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
         env:
           AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
-          AWS_REPO: ${{ vars.AWS_REPOSITORY }}
+          AWS_REPO: ${{ secrets.AWS_REPOSITORY }}
 
