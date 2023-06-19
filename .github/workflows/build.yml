@@ -62,6 +62,9 @@ jobs:
           domain-owner: ${{ secrets.AWS_REPOSITORY_ACCOUNT }}
           domain: ${{ secrets.DOMAIN }}
 
+      - name: Configure Java
+        uses: ./.github/actions/configure-java
+
       - name: Upload
         run: |
           mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
