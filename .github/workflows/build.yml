@@ -63,7 +63,6 @@ jobs:
           domain: ${{ secrets.DOMAIN }}
 
       - name: Upload
-        shell: bash
         run: |
           echo $AWS_REPO
           mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
