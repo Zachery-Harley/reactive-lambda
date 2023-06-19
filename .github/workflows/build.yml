@@ -64,9 +64,9 @@ jobs:
 
       - name: Upload
         run: |
-          echo ${{ environment.AWS_REPOSITORY }}
+          echo ${{ vars.AWS_REPOSITORY }}
           echo $AWS_REPO
         env:
           AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
-          AWS_REPO: ${{ environment.AWS_REPOSITORY }}
+          AWS_REPO: ${{ vars.AWS_REPOSITORY }}
 
