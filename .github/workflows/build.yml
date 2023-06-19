@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload
         shell: bash
-        run: mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5 -DaltDeploymentRepository=lambda-light::${AWS_REPO}
+        run: mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
         env:
           AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
           AWS_REPO: ${{ env.AWS_REPOSITORY }}

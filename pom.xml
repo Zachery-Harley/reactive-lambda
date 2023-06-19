@@ -42,7 +42,7 @@
         <repository>
             <name>lambda-light</name>
             <id>zacheryharley-java-lambda-light</id>
-            <url>${env.AWS_REPOSITORY}</url>
+            <url>${env.AWS_REPO}</url>
         </repository>
     </distributionManagement>
 
