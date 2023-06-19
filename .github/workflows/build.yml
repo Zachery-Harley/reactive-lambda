@@ -64,7 +64,8 @@ jobs:
 
       - name: Upload
         run: |
-          mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
+          touch temp.txt
+          aws s3 cp ./temp.txt s3://upload-test-bucket-001/
         env:
           AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
           AWS_REPO: ${{ vars.AWS_REPOSITORY }}
