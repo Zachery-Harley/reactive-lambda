@@ -67,5 +67,5 @@ jobs:
         run: mvn deploy -s .maven_settings.xml -DskipTests=true -Daether.checksums.algorithms=MD5
         env:
           AWS_TOKEN: ${{ steps.code-artifact.outputs.auth-token }}
-          AWS_REPOSITORY: ${{ secrets.AWS_REPOSITORY }}
+          AWS_REPOSITORY: ${{ env.AWS_REPOSITORY }}
 

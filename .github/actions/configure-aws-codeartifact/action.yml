@@ -22,6 +22,7 @@ runs:
       shell: bash
       run: |
         AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain $DOMAIN --domain-owner $DOMAIN_OWNER --query authorizationToken --output text)
+        echo "::add-mask::$AUTH_TOKEN"
         echo "AUTH_TOKEN=${AUTH_TOKEN}" >> $GITHUB_OUTPUT
       env:
         DOMAIN: ${{ inputs.domain }}
