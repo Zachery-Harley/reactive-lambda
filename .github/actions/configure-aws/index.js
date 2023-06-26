@@ -15,7 +15,13 @@ try {
         console.log(err);
 
         data.packages.forEach(function (value) {
-            codeArtifact.listPackageVersions({}, function (e, d) {
+            codeArtifact.listPackageVersions({
+                domain: 'zacheryharley-java',
+                repository: 'lambda-light',
+                namespace: value.namespace,
+                format: value.format,
+                package: value.package
+            }, function (e, d) {
                 d.versions.forEach(version => {
                     console.log(d.package + ":" + version.version + ":" + version.status);
                 })
