@@ -11,6 +11,8 @@ try {
         repository: 'lambda-light',
         namespace: 'uk.co.zacheryharley',
     }, function (err, data) {
+        console.log(err);
+
         data.packages.forEach(function (value) {
             codeArtifact.listPackageVersions({}, function (e, d) {
                 d.versions.forEach(version => {
