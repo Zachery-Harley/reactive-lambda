@@ -19,3 +19,9 @@ jobs:
           role-to-assume: ${{ secrets.AWS_PIPELINE_ROLE }}
           role-session-name: BuildSession
           aws-region: ${{ env.AWS_REGION }}
+
+      - uses: ./.github/actions/configure-aws
+        id: code-artifact
+        with:
+          domain-owner: ${{ secrets.AWS_REPOSITORY_ACCOUNT }}
+          domain: ${{ secrets.DOMAIN }}
