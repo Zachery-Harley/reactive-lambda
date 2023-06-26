@@ -10,6 +10,7 @@ try {
         domain: 'zacheryharley-java',
         repository: 'lambda-light',
         namespace: 'uk.co.zacheryharley',
+        format: 'maven',
     }, function (err, data) {
         console.log(err);
 
