@@ -8,7 +8,8 @@ const {
 } = require("@aws-sdk/client-codeartifact");
 
 const domain = core.getInput("domain");
-const repository = core.getInput("repository");
+// const repository = core.getInput("repository");
+const repository = "lambda-light"
 
 const client = new CodeartifactClient({region: 'eu-west-2'});
 
