@@ -7,6 +7,11 @@ const {
     ListPackageVersionsCommand
 } = require("@aws-sdk/client-codeartifact");
 
+
+const runDate = new Date().getTime();
+const unlistedTtl = 1;
+const snapshotTtl = 10;
+
 const domain = core.getInput("domain");
 // const repository = core.getInput("repository");
 const repository = "lambda-light"
@@ -23,10 +28,23 @@ class PackagePrune {
             const versions = await this.getAllPackageVersions(packageInfo);
             for (const version of versions) {
 
-                console.log(`${version.packageName}:${version.version}:${version.status}`)
-
+                if(this.shouldDelete(version)) {
+                    console.log(`${version.packageName}:${version.version}:${version.status}`)
+                }
             }
         }
+    }
+
+    shouldDelete(version) {
+        if(version.status === "Unlisted") {
+            return (runDate - new Date(version.publishedTime).getTime()) >= unlistedTtl;
+        }
+
+        if(version.version.includes('SNAPSHOT') > 0) {
+            return (runDate - new Date(version.publishedTime).getTime()) >= snapshotTtl;
+        }
+
+        return false;
     }
 
     async getAllPackages() {
