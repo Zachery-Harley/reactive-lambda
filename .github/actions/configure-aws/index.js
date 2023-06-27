@@ -1,38 +1,106 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-const AWS = require('aws-sdk');
+import {
+    CodeartifactClient,
+    DescribePackageVersionCommand,
+    ListPackagesCommand,
+    ListPackageVersionsCommand
+} from "@aws-sdk/client-codeartifact";
 
-AWS.config.update({region: 'eu-west-2'})
+// AWS.config.update({region: 'eu-west-2'})
 
-try {
-    var codeArtifact = new AWS.CodeArtifact({apiVersion: '2018-09-22'});
-    codeArtifact.listPackages({
-        domain: 'zacheryharley-java',
-        repository: 'lambda-light',
-        namespace: 'uk.co.zacheryharley',
-        format: 'maven',
-    }, function (err, data) {
-        console.log(err);
+const domain = core.getInput("domain");
+const namespace = core.getInput("namespace");
+const repository = core.getInput("repository");
+const format = core.getInput("format");
 
-        data.packages.forEach(function (value) {
-            codeArtifact.listPackageVersions({
-                domain: 'zacheryharley-java',
-                repository: 'lambda-light',
-                namespace: value.namespace,
-                format: value.format,
-                package: value.package
-            }, function (e, d) {
-                d.versions.forEach(version => {
-                    console.log(d.package + ":" + version.version + ":" + version.status);
-                })
-            })
+const client = new CodeartifactClient({region: 'eu-west-2'});
+
+class PackagePrune {
+
+    async getAllPackagesWithVersions() {
+        const packages = await this.getAllPackages();
+        const versionToDelete = [];
+
+        for (const packageInfo of packages) {
+            const versions = this.getAllPackageVersions(packageInfo);
+            for(const version of versions) {
+
+                console.log(`${version.packageName}:${version.version}:${version.status}`)
+
+            }
+        }
+    }
+
+    async getAllPackages() {
+        let packagePage = undefined;
+        const packages = [];
+
+        do {
+            packagePage = await this.getPackagePage(packagePage?.nextToken || undefined)
+
+            for (const packageInfo of packagePage.packages || []) {
+                packages.push(packageInfo);
+            }
+        } while (packagePage.nextToken !== undefined);
+
+        return packages;
+    }
+
+    async getPackagePage(nextToken = undefined) {
+        let listPackageCommand = new ListPackagesCommand({
+            domain: domain,
+            repository: repository,
+            nextToken: nextToken
+        });
+
+        return await client.send(listPackageCommand);
+    }
+
+    async describePackageVersion(packageSummary, versionSummary) {
+        const describePackageVersionCommand = new DescribePackageVersionCommand({
+            domain: domain,
+            repository: repository,
+            package: packageSummary.package,
+            namespace: packageSummary.namespace,
+            format: packageSummary.format,
+            packageVersion: versionSummary.version,
         })
-    });
 
+        return await client.send(describePackageVersionCommand);
+    }
 
-    const name = core.getInput('name');
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    console.log(`The event payload: ${payload}`);
-} catch (error) {
-    core.setFailed(err.message);
+    async getAllPackageVersions(packageSummary) {
+        let versionPage = undefined;
+        const versions = [];
+
+        do {
+            versionPage = await this.getPackageVersionPage(packageSummary?.nextToken || undefined);
+
+            for (const versionInfo of versionPage.versions || []) {
+                const result = await this.describePackageVersion(packageSummary, versionInfo);
+                versions.push(result.packageVersion);
+            }
+        } while (versionPage.nextToken !== undefined);
+
+        return versions;
+    }
+
+    async getPackageVersionPage(packageSummary, nextToken = undefined) {
+        const listPackageVersionCommand = new ListPackageVersionsCommand({
+            domain: domain,
+            repository: repository,
+            package: packageSummary.package,
+            namespace: packageSummary.namespace,
+            format: packageSummary.format,
+            nextToken: nextToken,
+        })
+        return await client.send(listPackageVersionCommand);
+    }
 }
+
+const output = async () => {
+    await new PackagePrune().getAllPackagesWithVersions();
+}
+
+output();
