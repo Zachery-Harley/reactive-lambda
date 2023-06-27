@@ -20,7 +20,7 @@ class PackagePrune {
         const versionToDelete = [];
 
         for (const packageInfo of packages) {
-            const versions = this.getAllPackageVersions(packageInfo);
+            const versions = await this.getAllPackageVersions(packageInfo);
             for (const version of versions) {
 
                 console.log(`${version.packageName}:${version.version}:${version.status}`)
