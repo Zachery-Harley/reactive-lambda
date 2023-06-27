@@ -7,12 +7,8 @@ import {
     ListPackageVersionsCommand
 } from "@aws-sdk/client-codeartifact";
 
-// AWS.config.update({region: 'eu-west-2'})
-
 const domain = core.getInput("domain");
-const namespace = core.getInput("namespace");
 const repository = core.getInput("repository");
-const format = core.getInput("format");
 
 const client = new CodeartifactClient({region: 'eu-west-2'});
 

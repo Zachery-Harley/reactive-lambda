@@ -1,6 +1,14 @@
 name: Node Test
 description: Node Test
 
+inputs:
+  domain:
+    required: true
+    description: "The domain"
+  repository:
+    required: true
+    description: "The repo"
+
 runs:
   using: 'node16'
   main: 'index.js'
