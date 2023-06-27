@@ -72,7 +72,7 @@ class PackagePrune {
         const versions = [];
 
         do {
-            versionPage = await this.getPackageVersionPage(packageSummary?.nextToken || undefined);
+            versionPage = await this.getPackageVersionPage(packageSummary, packageSummary?.nextToken || undefined);
 
             for (const versionInfo of versionPage.versions || []) {
                 const result = await this.describePackageVersion(packageSummary, versionInfo);
