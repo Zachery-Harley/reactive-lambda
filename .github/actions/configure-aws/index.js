@@ -1,11 +1,11 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-import {
+const {
     CodeartifactClient,
     DescribePackageVersionCommand,
     ListPackagesCommand,
     ListPackageVersionsCommand
-} from "@aws-sdk/client-codeartifact";
+} = require("@aws-sdk/client-codeartifact");
 
 const domain = core.getInput("domain");
 const repository = core.getInput("repository");
@@ -20,7 +20,7 @@ class PackagePrune {
 
         for (const packageInfo of packages) {
             const versions = this.getAllPackageVersions(packageInfo);
-            for(const version of versions) {
+            for (const version of versions) {
 
                 console.log(`${version.packageName}:${version.version}:${version.status}`)
 
