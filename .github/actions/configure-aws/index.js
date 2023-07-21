@@ -36,6 +36,9 @@ class PackagePrune {
     }
 
     shouldDelete(version) {
+        //Want to preserve the latest x snapshot that is not a feature branch.
+        //Dont currently have the features being pushed as such
+
         if(version.status === "Unlisted") {
             return (runDate - new Date(version.publishedTime).getTime()) >= unlistedTtl;
         }
