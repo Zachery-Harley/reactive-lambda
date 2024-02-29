@@ -15,20 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>uk.co.zacheryharley.lambdalight</groupId>
-            <artifactId>lambda-light-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>uk.co.zacheryharley.lambdalight</groupId>
-            <artifactId>lambda-light-monitoring</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>uk.co.zacheryharley.lambdalight</groupId>
-            <artifactId>lambda-light-aws-sqs</artifactId>
-            <scope>provided</scope>
+            <artifactId>lambda-light-layer-core</artifactId>
         </dependency>
     </dependencies>
 

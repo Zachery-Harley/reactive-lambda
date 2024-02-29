@@ -16,8 +16,9 @@ public class EchoFunction implements ApplicationContextInitializer<GenericApplic
     @Override
     public void initialize(GenericApplicationContext context) {
         context.registerBean("eventHandler", FunctionRegistration.class,
-                () -> new FunctionRegistration<>(eventHandler()
-                ).type(EchoEventHandler.getFunctionType()));
+            () -> new FunctionRegistration<>(eventHandler())
+                .type(EchoEventHandler.getFunctionType())
+        );
     }
 
     public EchoEventHandler eventHandler() {

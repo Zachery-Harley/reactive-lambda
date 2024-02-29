@@ -25,7 +25,7 @@ class JsonLoggingMeterRegistryTest {
 
     @Test
     void shouldCreateCounter() {
-        String expected = "{\"meter\":{\"type\":\"counter\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s}}";
+        String expected = "{\"meter\":{\"name\":\"my.counter\",\"type\":\"counter\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s}}";
         Counter counter = uut.counter("my.counter", "tag1", "value1");
         counter.increment();
         counter.increment(2);
@@ -39,7 +39,7 @@ class JsonLoggingMeterRegistryTest {
 
     @Test
     void shouldCreateTimer() {
-        String expected = "{\"meter\":{\"type\":\"timer\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s,\"total\":%s,\"max\":%s,\"unit\":\"MILLISECONDS\",\"mean\":%s}}";
+        String expected = "{\"meter\":{\"name\":\"my.timer\",\"type\":\"timer\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s,\"total\":%s,\"max\":%s,\"unit\":\"MILLISECONDS\",\"mean\":%s}}";
         Timer timer = uut.timer("my.timer", "tag1", "value1");
         timer.record(Duration.ofSeconds(3));
         timer.record(Duration.ofSeconds(5));
@@ -53,7 +53,7 @@ class JsonLoggingMeterRegistryTest {
 
     @Test
     void shouldCreateGauge() {
-        String expected = "{\"meter\":{\"type\":\"gauge\",\"tags\":{\"tag1\":\"value1\"},\"value\":%s}}";
+        String expected = "{\"meter\":{\"name\":\"my.gauge\",\"type\":\"gauge\",\"tags\":{\"tag1\":\"value1\"},\"value\":%s}}";
         List<String> monitored = new ArrayList<>();
         uut.gauge(monitored, "my.gauge", "tag1", "value1");
 

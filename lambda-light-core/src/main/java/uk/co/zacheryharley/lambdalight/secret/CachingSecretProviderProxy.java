@@ -29,6 +29,5 @@ public class CachingSecretProviderProxy implements SecretProvider {
 
         return proxy.getSecret(secretId)
             .doOnNext(future::complete)
-            .doOnError(future::completeExceptionally);
-    }
+            .doOnError(future::completeExceptionally);    }
 }

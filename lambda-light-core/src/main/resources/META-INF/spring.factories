@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+  uk.co.zacheryharley.lambdalight.config.JsonContextInitializer
