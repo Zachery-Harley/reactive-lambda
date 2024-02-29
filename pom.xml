@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.2.3</version>
     </parent>
 
     <groupId>uk.co.zacheryharley.lambdalight</groupId>
@@ -27,8 +27,8 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -81,6 +81,12 @@
             <dependency>
                 <groupId>uk.co.zacheryharley.lambdalight</groupId>
                 <artifactId>lambda-light-monitoring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>uk.co.zacheryharley.lambdalight</groupId>
+                <artifactId>lambda-light-layer-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

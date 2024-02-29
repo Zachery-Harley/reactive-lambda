@@ -56,7 +56,7 @@ public class SecureString implements CharSequence {
      * Manually clear the underlying array holding the characters
      */
     public void clear() {
-        Arrays.fill(chars, '0');
+        Arrays.fill(chars, 0);
         Arrays.fill(pad, 0);
     }
 
