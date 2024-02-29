@@ -25,7 +25,7 @@ class JsonLoggingMeterRegistryTest {
 
     @Test
     void shouldCreateCounter() {
-        String expected = "{\"meter\":{\"name\":\"my.counter\",\"type\":\"counter\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s   }}";
+        String expected = "{\"meter\":{\"name\":\"my.counter\",\"type\":\"counter\",\"tags\":{\"tag1\":\"value1\"},\"count\":%s}}";
         Counter counter = uut.counter("my.counter", "tag1", "value1");
         counter.increment();
         counter.increment(2);
