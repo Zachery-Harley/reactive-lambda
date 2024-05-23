@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/LambdaLightCore/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda-light-aws-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda-light-aws-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lambda-light-aws-s3/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda-light-aws-sqs/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda-light-aws-sqs/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda-light-core/src/main/java" charset="UTF-8" />

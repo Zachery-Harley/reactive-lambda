@@ -24,6 +24,7 @@
         <module>lambda-light-aws-sqs</module>
         <module>lambda-light-aws-core</module>
         <module>lambda-light-monitoring</module>
+        <module>lambda-light-aws-s3</module>
     </modules>
 
     <properties>

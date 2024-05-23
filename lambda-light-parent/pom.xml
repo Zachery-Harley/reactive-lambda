@@ -95,6 +95,13 @@
 
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
+                <artifactId>s3</artifactId>
+                <version>${aws-sdk.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
                 <artifactId>secretsmanager</artifactId>
                 <version>${aws-sdk.version}</version>
             </dependency>
